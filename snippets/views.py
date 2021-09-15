@@ -1,8 +1,10 @@
 from django.shortcuts import render
+
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
+
 from snippets.models import Snippet
 from snippets.serializers import Snippet_Serializer
 
@@ -33,8 +35,7 @@ def snippet_detail(request, pk, format=None):
         return Response(serializer.data)
 
     elif request.method == 'PUT':
-        data = JSONParser().parse(request)
-        serializer = Snippet_Serializer(snippet, data=data)
+        serializer = Snippet_Serializer(snippet, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
